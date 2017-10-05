@@ -1,0 +1,23 @@
+'LOCAL CITY CLEAN UP'
+PROJECT SPECS
+
+
+The City Clean Up app allows users to:
+This app will allow city residents to organize and arrange any clean-up and disaster-relief efforts.
+
+As a USER, I will be able to: 
+
+(1) Search for an upcoming event by ZIP CODE.
+    (a) View the result of upcoming event by ZIP CODE.
+    (b) View the Google Map to the addresses of the listed results
+
+(2) Create an event an event.
+    - Enter type of Event: i.e. city clean up, disaster relief...
+    - Enter date: i.e. 10/15/2017
+    - Enter time: i.e. 8:00AM
+    - Enter public meeting location: user to insert address or landmarks
+    - Enter additional details: user to insert additional information about 
+
+OPEN QUESTIONS:
+(1) Not sure how to distinguish user id to the id of the created event 
+    (for editing, canceling or deleting of event)
