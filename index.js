@@ -3,13 +3,14 @@
 
 let appState = {
   _events: [
-    {name:'Hillside Cleanup', date: 10-15-17, time: '10AM', address: '350 N Lemon Ave', zipcode: 91789, detail: 'Bring your own trash bag'}
+    {name:'Hillside Cleanup2', date: '10-15-17', time: '10AM', address: '350 N Lemon Ave', city: 'Walnut', zipcode: 91789, detail: 'Bring your own trash bag'}
   ],  
 
-  displayResult: [],
+  displayResult: [
+  ],
   googlemap: null,
   searchedZip: 0,
-  view: 'result' //intro, no-event, create, result, congrats
+  view: 'intro' //intro, no-event, create, result, congrats
 };
 
 const apiKeys = {
@@ -17,7 +18,6 @@ const apiKeys = {
   geoEndPoint: 'https://maps.googleapis.com/maps/api/geocode/json',
   appKey:'AIzaSyCrDeyFqVXRH69AXII81KCWTQGSEKTNCzY'
 };
-// const geoAppKey = 'AIzaSyDdSL1rMniEVUbwR1FWumnK44KI-vMP6B4';
 
 function getGeoCode(address, callback) {
   let {appKey, geoEndPoint, mapEndPoint} = apiKeys;
@@ -35,10 +35,14 @@ getGeoCode('Los Angeles', event =>
 );
 
 function renderPage(){
+  let html = generateDisplayElement(appState.displayResult);
+  $('.event-search').html(html);
+}
+
+function generateDisplayElement(){
   const {view} = appState;
-  let html;
   if(view === 'intro') {
-    html = (
+    return (
       `<form action="#" class="view-intro">
       <h2>Search for an event</h2>
       <label for="zip-code-search">Input your zip code to find if there is an upcoming event near you:</label>
@@ -46,71 +50,59 @@ function renderPage(){
       <button type="submit" class="submit-search js-submit-search">Search</button>
       <p>or</p>
       <button class="create-event js-create-event">Create an Event</button>
-    </form>`
-    );
+    </form>`);
   } if(view === 'no-event') {
-    html = (
+    return (
       `<div class="no-event js-no-event">
       <h2>There is no upcoming event</h2>
       <p>But that doesn't mean you can't plan one!</p>
       <button class="create-event js-create-event">Create an Event</button>
       <button class="return js-return-">Return to Search</button>
-      
-    </div>`
-    );
+      </div>`);
   } if(view === 'create') {
-    html = (
+    return (
       `<form action="#" class="view-create js-view-create">
       <fieldset name="create-event">
       <legend>Create an Event</legend>
       <label for="form-event-name">Name of Event</label>
       <input type="text" class="js-event-name" id="form-event-name" name="name" placeholder="i.e. Hillside Clean Up">
       <label for="form-date">Date:</label>
-      <input type="date" class="js-event-date"  id="form-date" name="date">        
+      <input type="date" class="js-event-date"  id="form-date" name="date" value="2017-10-06">        
       <label for="form-time">Time:</label>
       <input type="time" class="js-event-time"  id="form-time" name="time">        
       <label for="form-event-address">Meeting Address</label>
       <input type="text" class="js-event-address" id="form-event-address" name="address" placeholder="i.e. 123 Wrangler Way">
-      <label for="zip-code">Zip Code:</label>
+      <label for="form-city">City::</label>
+      <input type="text" class="js-event-city"  id="form-city" name="city" placeholder="i.e. Los Angeles">       
+      <label for="form-zip-code">Zip Code:</label>
       <input type="number" class="js-event-zip-code"  id="form-zip-code" name="zip-code" placeholder="i.e. 91789">       
       <label for="form-event-detail">Additional Details</label>
       <input type="textbox" class="js-event-detail" id="form-event-detail" name="detail" placeholder="i.e. Rubber gloves to be provided">      
       <button type="submit" class="add-event js-add-event">Add Event</button>
     </fieldset>
-    </form>`
-    );
+    </form>`);
   } if(view === 'result') {
-    function processDisplayResult(){
-      asdf
-    }
-    let {name, date, time, address, zipcode, detail} = appState.displayResult;
-    html = (
-      `<div class="view-result"> 
-      <h2>Upcoming Event</h2>    
-      <ul class="result js-result">
-        <li>
-          Hillside Clean Up <br/>
-          Date: 10/15/2017 <br/>
-          Time: 10:00AM <br/>
-          Address: 123 Street, Los Angeles CA 91789 <br/>
-          GoogleMap <br/>
-          <button>Click here for Street View/Directions</button>
-        </li>
-      </ul>
-      <button class="return js-return">Return to Search</button>
+    let resultElement = processResult();
+    return (
+      `
+    <h2>Upcoming Event</h2> 
+    <div class="view-result">    
+    <ul class="result js-result">
+    ${resultElement}
+    </ul>
+    <button class="return js-return">Return to Search</button>
     </div>`
     );
+      
   } if(view === 'congrats') {
-    html = (
+    return (
       `<div class="view-congrats"> 
       <p>Your event has been successfully created!</p>    
       <button>Return to Results</button>
         </li>
       </ul>
-    </div>`
-    );
+    </div>`);
   }
-  $('.event-search').html(html);
 }
 
 //INTRO VIEW by Default
@@ -141,6 +133,27 @@ function processInput(zipCodeValue) {
     }
     else appState.view = 'no-event';
   }
+}
+
+function processResult(){
+  //reset display result
+  appState.displayResult = [];
+  //loop through all displayResult Objects
+  const elementArray = [];
+  for(let event of appState._events){
+    elementArray.push(
+      `<li>
+        ${event.name} <br/>
+        Date: ${event.date} <br/>
+        Time: ${event.time} <br/>
+        Address: ${event.address}, ${event.city}, ${event.zipcode} <br/>
+        Detail: ${event.detail} <br/>
+        GoogleMap 
+        <button>Google Map</button>
+      </li>`);
+  }
+  let elementString = elementArray.join('');
+  return elementString;
 }
 
 //CREATE & NO EVENT VIEW
