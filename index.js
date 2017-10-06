@@ -3,13 +3,13 @@
 
 let appState = {
   _events: [
-    {name:'Hillside Cleanup2', date: '10-15-17', time: '10AM', address: '350 N Lemon Ave', city: 'Walnut', zipcode: 91789, detail: 'Bring your own trash bag'}
+    {name:'Hillside Cleanup4', date: '10-15-17', time: '10AM', address: '350 N Lemon Ave', city: 'Walnut', zipcode: 91789, detail: 'Bring your own trash bag'}
   ],  
 
   displayResult: [],
   googlemap: [],
   searchedZip: 0,
-  view: 'result' //intro, no-event, create, result, congrats
+  view: 'intro' //intro, no-event, create, result, congrats
 };
 
 const apiKeys = {
@@ -127,7 +127,7 @@ function processInput(zipCodeValue) {
   //DO FIND method instead
   for(let key of _events) {
     if(key.zipcode === searchedZip) {
-      appState.displayResult.push(appState._events[key]);
+      appState.displayResult.push(key);
       appState.view = 'result';
     }
     else appState.view = 'no-event';
@@ -136,30 +136,28 @@ function processInput(zipCodeValue) {
 
 function processResult(){
   //reset display result
-  appState.displayResult = [];
   //loop through all displayResult Objects
   const elementArray = [];
-  for(let event of appState._events){
+  appState.displayResult.map((event, index) => {
     elementArray.push(
-      `<li>
-        Event: ${event.name} <br/>
-        Date: ${event.date} <br/>
-        Time: ${event.time} <br/>
-        Address: ${event.address}, ${event.city}, ${event.zipcode} <br/>
-        Detail: ${event.detail} <br/>
-        GoogleMap 
+      `<li data-value="${index}">
+        Event: <span class="js-list-name">${event.name}</span><br/>
+        Date: <span class="js-list-date">${event.date}</span><br/>
+        Time: <span class="js-list-time">${event.time}</span><br/>
+        Address: <span class="js-list-address">${event.address}</span>, <span class="js-city">${event.city}</span>, <span class="js-zipcode">${event.zipcode}</span><br/>
+        Detail: <span class="js-list-detail">${event.detail}</span><br/>
         <button class="google-map js-google-map">Google Map</button>
       </li>`);
-  }
+  });
 
-  function compare(a,b) {
-    if (a.date < b.date)
-      return -1;
-    if (a.date > b.date)
-      return 1;
-    return 0;
-  }
-  elementArray.sort(compare);
+  // function compare(a,b) {
+  //   if (a.date < b.date)
+  //     return -1;
+  //   if (a.date > b.date)
+  //     return 1;
+  //   return 0;
+  // }
+  // elementArray.sort(compare);
 
   let elementString = elementArray.join('');
   return elementString;
@@ -194,7 +192,6 @@ function processCreateEvent(formData){
   });
   appState._events.push(newEvent);
   appState.view = 'congrats';
-  console.log(appState._events, appState.view);
 } 
 //Listen to user click on Return to Result
 function handleReturnToResultClick(){
@@ -215,14 +212,22 @@ function handleReturnToSearchClick(){
 }
 
 //Listen to user click on Google Map
+//Find index from clicked position on displayed list
+//Search stateApp.displayResult with index and get address
+//Feed to Google Map API
 function handleGoogleMapClick(){
   $('.event-search').on('click', '.js-google-map', event => {
     console.log('`handleGoogleMapClick` ran');
-    let test = $(event.currentTarget).parent();
-    console.log(test);
+    let clickedListIndex = $(event.target).parent().data('value');
+    generateGeoCodes(clickedListIndex);
   });
 }
 
+function generateGeoCodes(index){
+  const {displayResult} = appState;
+  const clickedEvent = displayResult[index];
+  
+}
 
 function listenToClicks(){
   renderPage();
@@ -235,10 +240,6 @@ function listenToClicks(){
 }
 
 $(listenToClicks);
-
-//RESULT VIEW
-//Listen to User Click on Individual event (li)
-//Expands (or) Show list details w/ Google Map//Listens to User Click to return to "INTRO" view
 
 //------
 // function initMap(){
