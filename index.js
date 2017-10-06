@@ -7,7 +7,7 @@ let appState = {
   ],  
 
   displayResult: [],
-  googlemap: [],
+  googlemap: {lat: null, lng: null},
   searchedZip: 0,
   view: 'intro' //intro, no-event, create, result, congrats
 };
@@ -56,7 +56,7 @@ function generateDisplayElement(){
       <h2>There is no upcoming event</h2>
       <p>But that doesn't mean you can't plan one!</p>
       <button class="create-event js-create-event">Create an Event</button>
-      <button class="return js-return-">Return to Search</button>
+      <button class="return js-return">Return to Search</button>
       </div>`);
   } if(view === 'create') {
     return (
@@ -97,10 +97,8 @@ function generateDisplayElement(){
     return (
       `<div class="view-congrats"> 
       <p>Your event has been successfully created!</p>    
-      <button>Return to Results</button>
-        </li>
-      </ul>
-    </div>`);
+      <button class="return js-return">Return to Search</button>
+      </div>`);
   }
 }
 
@@ -123,8 +121,8 @@ function processInput(zipCodeValue) {
   //if there is a match, change view to 'result'
   //if there is no match, change view to 'no event'
   let {_events, searchedZip, view} = appState;
-  searchedZip = zipCodeValue;
-  //DO FIND method instead
+  searchedZip = zipCodeValue;  
+  appState.displayResult = [];  
   for(let key of _events) {
     if(key.zipcode === searchedZip) {
       appState.displayResult.push(key);
@@ -137,6 +135,7 @@ function processInput(zipCodeValue) {
 function processResult(){
   //reset display result
   //loop through all displayResult Objects
+  
   const elementArray = [];
   appState.displayResult.map((event, index) => {
     elementArray.push(
@@ -189,18 +188,19 @@ function processCreateEvent(formData){
   $('fieldset').find('input').each(function(index, element){
     const { name, value } = element;
     newEvent[name] = value;
+    console.log(newEvent);
   });
   appState._events.push(newEvent);
   appState.view = 'congrats';
 } 
-//Listen to user click on Return to Result
-function handleReturnToResultClick(){
-  $('.event-search').on('click', '.view-congrats', event => {
-    console.log('`handleReturnToResultClick` ran');
-    appState.view = 'result';
-    renderPage();
-  });
-}
+// //Listen to user click on Return to Result
+// function handleReturnToResultClick(){
+//   $('.event-search').on('click', '.view-congrats', event => {
+//     console.log('`handleReturnToResultClick` ran');
+//     appState.view = 'result';
+//     renderPage();
+//   });
+// }
 
 //Listen to user click on Return to Search
 function handleReturnToSearchClick(){
@@ -219,27 +219,45 @@ function handleGoogleMapClick(){
   $('.event-search').on('click', '.js-google-map', event => {
     console.log('`handleGoogleMapClick` ran');
     let clickedListIndex = $(event.target).parent().data('value');
-    generateGeoCodes(clickedListIndex);
+    obtainAddress(clickedListIndex);
   });
 }
 
-function generateGeoCodes(index){
+function obtainAddress(index){
   const {displayResult} = appState;
   const clickedEvent = displayResult[index];
-  
+  const {address, city, zipcode} = clickedEvent;
+  const fullAddress = `${address} ${city} ${zipcode}`;
+  console.log(fullAddress);
+
+  getGeoCode(fullAddress, fetchGeo);
 }
+
+//Fetch Geos (lat & long) -- callback function
+function fetchGeo(data) {
+  const returnedData = data.results['0'].geometry.location;
+  appState.googlemap.lat = returnedData.lat;
+  appState.googlemap.lng = returnedData.lng;
+  console.log(appState.googlemap.lat, appState.googlemap.lng);
+}
+
+// function initMap(){
+
+// }
 
 function listenToClicks(){
   renderPage();
   handleSearchClick();
   handleCreateClick();
   handleAddEventButton();
-  handleReturnToResultClick();
   handleReturnToSearchClick();
   handleGoogleMapClick();
 }
 
 $(listenToClicks);
+
+//BUG
+//Add New Event not Adding
 
 //------
 // function initMap(){
