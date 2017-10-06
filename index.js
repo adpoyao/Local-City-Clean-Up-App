@@ -6,11 +6,10 @@ let appState = {
     {name:'Hillside Cleanup2', date: '10-15-17', time: '10AM', address: '350 N Lemon Ave', city: 'Walnut', zipcode: 91789, detail: 'Bring your own trash bag'}
   ],  
 
-  displayResult: [
-  ],
-  googlemap: null,
+  displayResult: [],
+  googlemap: [],
   searchedZip: 0,
-  view: 'intro' //intro, no-event, create, result, congrats
+  view: 'result' //intro, no-event, create, result, congrats
 };
 
 const apiKeys = {
@@ -143,15 +142,25 @@ function processResult(){
   for(let event of appState._events){
     elementArray.push(
       `<li>
-        ${event.name} <br/>
+        Event: ${event.name} <br/>
         Date: ${event.date} <br/>
         Time: ${event.time} <br/>
         Address: ${event.address}, ${event.city}, ${event.zipcode} <br/>
         Detail: ${event.detail} <br/>
         GoogleMap 
-        <button>Google Map</button>
+        <button class="google-map js-google-map">Google Map</button>
       </li>`);
   }
+
+  function compare(a,b) {
+    if (a.date < b.date)
+      return -1;
+    if (a.date > b.date)
+      return 1;
+    return 0;
+  }
+  elementArray.sort(compare);
+
   let elementString = elementArray.join('');
   return elementString;
 }
@@ -205,6 +214,16 @@ function handleReturnToSearchClick(){
   });
 }
 
+//Listen to user click on Google Map
+function handleGoogleMapClick(){
+  $('.event-search').on('click', '.js-google-map', event => {
+    console.log('`handleGoogleMapClick` ran');
+    let test = $(event.currentTarget).parent();
+    console.log(test);
+  });
+}
+
+
 function listenToClicks(){
   renderPage();
   handleSearchClick();
@@ -212,6 +231,7 @@ function listenToClicks(){
   handleAddEventButton();
   handleReturnToResultClick();
   handleReturnToSearchClick();
+  handleGoogleMapClick();
 }
 
 $(listenToClicks);
