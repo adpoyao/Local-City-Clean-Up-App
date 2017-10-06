@@ -8,7 +8,7 @@ html, body {
   margin: 0;
   padding: 0;
   font-family: 'Merriweather', serif;
-  background-color: rgb(226, 226, 226)
+  background-color: rgb(226, 226, 226);
 }
 
 #map {
@@ -19,11 +19,41 @@ html, body {
   border-radius: 3px;
 }
 
+main {
+  text-align: center;
+}
+
+.view-intro,
+.view-no-event,
+.view-create,
+.view-result,
+.view-congrats {
+  background-color: rgba(255, 255, 255, 0.6);
+  width: 50%;
+  height: auto;
+  margin: 50px auto;
+  border: 3px;
+  border-radius: 5px;
+  padding: 20px
+}
+
+header { 
+  transform: scale(0.9);
+  transition: all 0.2s ease;
+}
+
+header:hover {
+  webkit-transform: scale(1.1);
+  -ms-transform: scale(1.1);
+  transform: scale(1.1);
+  transition: all 0.2s ease;
+}
+
 h1 {
   font-family: 'Modak', cursive;
   font-size: 4em;
   text-align: center;
-  margin: 50px;
+  margin-top: 50px;
 }
 
 h2 {
@@ -31,15 +61,16 @@ h2 {
   margin-bottom: 20px;
 }
 
+.line-break {
+  color: grey;
+  padding: 10px;
+}
+
 .zip-code-search {
   display: block;
   margin: 10px auto 5px;
-  heigth: 25px;
+  height: 25px;
   width: 150px;
-}
-
-main {
-  text-align: center;
 }
 
 button {
@@ -52,12 +83,15 @@ button {
   border:none;
   border-radius: 2px;  
   box-shadow:none;
+  opacity: 0.8;
 }
 
 button:hover {
   color: black;
   border: 1px white solid;
-  transition-delay: 0.05s;
+  cursor: pointer;
+  opacity: 1;
+  transition: all 0.3s ease;
 }
 
 .add-event, .return-2 {
@@ -72,7 +106,7 @@ fieldset {
   margin: 0 auto;
 }
 
-fieldset input {
+fieldset input, fieldset textarea {
    height: 30px;
    margin-bottom: 10px;
    display:table-cell; 

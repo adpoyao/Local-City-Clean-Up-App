@@ -1,8 +1,8 @@
-'LOCAL CITY CLEAN UP'
+'CLEAN CITY MEETUP'
 PROJECT SPECS
 
 
-The City Clean Up app allows users to:
+The CLEAN CITY MEETUP app allows users to:
 This app will allow city residents to organize and arrange any clean-up and disaster-relief efforts.
 
 As a USER, I will be able to: 
