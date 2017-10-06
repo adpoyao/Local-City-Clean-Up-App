@@ -4,11 +4,120 @@
 
 html, body {
   height: 100%;
+  width: 100%;
   margin: 0;
   padding: 0;
+  font-family: 'Merriweather', serif;
+  background-color: rgb(226, 226, 226)
 }
 
 #map {
   height: 0%;
-  width: 70%;
+  width: 50%;
+  margin: 20px auto;
+  border: 3px rgb(184, 184, 184) solid;
+  border-radius: 3px;
+}
+
+h1 {
+  font-family: 'Modak', cursive;
+  font-size: 4em;
+  text-align: center;
+  margin: 50px;
+}
+
+h2 {
+  font-size: 1.5em;
+  margin-bottom: 20px;
+}
+
+.zip-code-search {
+  display: block;
+  margin: 10px auto 5px;
+  heigth: 25px;
+  width: 150px;
+}
+
+main {
+  text-align: center;
+}
+
+button {
+  width: 150px;
+  color: rgb(255, 255, 255);
+  height: 25px;
+  background-color: rgb(8, 173, 202);
+  box-shadow: none;
+  text-shadow: none;
+  border:none;
+  border-radius: 2px;  
+  box-shadow:none;
+}
+
+button:hover {
+  color: black;
+  border: 1px white solid;
+  transition-delay: 0.05s;
+}
+
+.add-event, .return-2 {
+  display: block;
+  width: 200px;
+  margin: 10px auto;
+}
+
+fieldset {
+  width: 400px;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+fieldset input {
+   height: 30px;
+   margin-bottom: 10px;
+   display:table-cell; 
+   width: 100%;
+   box-shadow: none;
+   text-shadow: none;
+   border:none;
+   border-radius: 2px;  
+   box-shadow:none
+}
+
+fieldset input:hover {
+  border: 1px rgb(255, 174, 0) solid;
+}
+
+legend {
+  font-size: 1.5em;
+  margin: 15px;
+}
+
+.js-event-detail {
+  height: 200px;
+}
+
+.return {
+  margin: 10px;
+}
+
+fieldset label {
+  display:table-cell;
+}
+
+li {
+  width: 400px;
+  margin: 10px auto;
+  color: rgb(187, 0, 0);
+  text-align: left;
+}
+
+li span {
+  color: black;
+}
+
+.google-map {
+  position: relative;
+  background-color: rgb(255, 174, 0);
+  margin: 10px auto;
 }

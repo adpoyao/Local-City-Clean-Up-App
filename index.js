@@ -3,7 +3,7 @@
 
 let appState = {
   _events: [
-    // {name:'Hillside Cleanup', date: '10-15-17', time: '10AM', address: '350 N Lemon Ave', city: 'Walnut', zipcode: 91789, detail: 'Bring your own trash bag'},
+    {name:'Hillside Cleanup', date: '10-15-17', time: '10AM', address: '350 N Lemon Ave', city: 'Walnut', zipcode: 91789, detail: 'Bring your own trash bag'},
     {name:'Park Clean Up', date: '10-16-17', time: '9AM', address: '400 Pierre Road', city: 'Walnut', zipcode: 91789, detail: 'Brunch potluck after'}
   ],  
 
@@ -62,28 +62,32 @@ function generateDisplayElement(){
       <legend>Create an Event</legend>
       <label for="form-event-name">Name of Event</label>
       <input type="text" class="js-event-name" id="form-event-name" name="name" placeholder="i.e. Hillside Clean Up">
-      <label for="form-date">Date:</label>
+      </br>
+      <label for="form-date">Date</label>
       <input type="date" class="js-event-date"  id="form-date" name="date" value="2017-10-06">        
-      <label for="form-time">Time:</label>
+      <label for="form-time">Time</label>
       <input type="time" class="js-event-time"  id="form-time" name="time">        
+      </br>
       <label for="form-event-address">Meeting Address</label>
       <input type="text" class="js-event-address" id="form-event-address" name="address" placeholder="i.e. 123 Wrangler Way">
-      <label for="form-city">City::</label>
+      </br>
+      <label for="form-city">City</label>
       <input type="text" class="js-event-city"  id="form-city" name="city" placeholder="i.e. Los Angeles">       
       <label for="form-zip-code">Zip Code:</label>
       <input type="number" class="js-event-zip-code"  id="form-zip-code" name="zip-code" placeholder="i.e. 91789">       
+      </br>
       <label for="form-event-detail">Additional Details</label>
-      <input type="textbox" class="js-event-detail" id="form-event-detail" name="detail" placeholder="i.e. Rubber gloves to be provided">      
+      <input type="textbox" class="js-event-detail" id="form-event-detail" name="detail">      
       <button type="submit" class="add-event js-add-event">Add Event</button>
+      <button class="return-2 js-return">Return to Search</button>      
     </fieldset>
     </form>`);
   } if(view === 'result') {
     let resultElement = processResult();
     return (
       `
-    <h2>Upcoming Event</h2> 
+    <h2>Upcoming Events</h2> 
     <div class="view-result">
-    <div class="js-list-map"></div>    
     <ul class="result js-result">
     ${resultElement}
     </ul>
